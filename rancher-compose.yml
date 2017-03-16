@@ -1,0 +1,4 @@
+version: '2'
+services:
+  peervpn:
+    start_on_create: true

@@ -1,0 +1,20 @@
+version: '2'
+services:
+  peervpn:
+    cap_add:
+    - NET_ADMIN
+    image: thedrhax/rancher-peervpn
+    environment:
+      VPN_KEY: PASSWORD_FOR_YOUR_NETWORK
+      VPN_NAME: NAME_OF_YOUR_NETWORK
+      VPN_PEERS: PUBLIC_PEER_1 7000 PUBLIC_PEER_2 7000
+    devices:
+    - /dev/net/tun:/dev/net/tun:rwm
+    stdin_open: true
+    network_mode: host
+    tty: true
+    labels:
+      io.rancher.container.dns: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: peervpn=false
+      io.rancher.scheduler.global: 'true'
