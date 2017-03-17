@@ -12,9 +12,10 @@ services:
     - /dev/net/tun:/dev/net/tun:rwm
     stdin_open: true
     network_mode: host
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
     tty: true
     labels:
-      io.rancher.container.dns: 'true'
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: peervpn=false
       io.rancher.scheduler.global: 'true'
