@@ -10,9 +10,9 @@ networkname ${VPN_NAME}
 psk ${VPN_KEY}
 enabletunneling yes
 enablerelay no
-port 7000
+port ${VPN_PORT:-7000}
 
-interface vpn0
+interface ${VPN_INTERFACE:-vpn0}
 ifconfig4 ${VPN_IP}
 
 enableprivdrop yes
