@@ -1,25 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ ! "$VPN_IP" ]; then
-    export VPN_IP="$(docker inspect rancher-agent | grep CATTLE_AGENT_IP | grep -o '[0-9\.]*')/24"
-    echo "Detected host IP: $VPN_IP"
+if [ "$RANCHER_AGENT" ]; then
+    VPN_IP="$(docker inspect rancher-agent | grep CATTLE_AGENT_IP | grep -o '[0-9\.]*')/24"
+    echo "Using variable CATTLE_AGENT_IP from $RANCHER_AGENT as VPN_IP ($VPN_IP)"
 fi
 
-cat >> /peervpn.conf <<EOF
-networkname ${VPN_NAME}
-psk ${VPN_KEY}
-enabletunneling yes
-enablerelay no
-port ${VPN_PORT:-7000}
-
-interface ${VPN_INTERFACE:-vpn0}
-ifconfig4 ${VPN_IP}
-
-enableprivdrop yes
-user nobody
-group nogroup
-
-initpeers ${VPN_PEERS}
-EOF
-
-$@
+exec /entrypoint.sh $@
